@@ -1,0 +1,27 @@
+name: Create an executable
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Create an executable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+      - name: Create executable
+        run: |
+          pyinstaller main.py --name chatpdf --onefile
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: chatpdf executable upload
+          path: dist/chatpdf
